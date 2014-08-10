@@ -1,4 +1,9 @@
 require "giro_checkout/engine"
+require "giro_checkout/api/gc_message"
+require "giro_checkout/api/gc_bankstatus_message"
+require "giro_checkout/api/gc_transactionstart_message"
+require "giro_checkout/api/gc_giropaytransactionstart_message"
+require "giro_checkout/api/gc_paypaltransactionstart_message"
 
 module GiroCheckout
 
