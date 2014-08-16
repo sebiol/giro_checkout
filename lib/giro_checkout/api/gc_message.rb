@@ -28,6 +28,18 @@ module GiroCheckout
       request.set_form_data(@parameters)
 
       response = http.request(request)
+      return nil unless check_response response
+
+      return response
+    end
+
+    def check_response response
+      return false unless response 
+      return false unless response.code == '200'
+      raise "no hash" unless response.header['hash']
+      raise "no body" unless response.body
+
+      build_hash(response.body) == response.header['hash']
     end
 
     #overwrite in child classes as order of input params is important
