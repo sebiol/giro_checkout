@@ -21,8 +21,9 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency('rspec-rails', '2.13.2')
+  s.add_development_dependency('webmock')
   #Dependencies require ruby 1.9.3
   #s.add_development_dependency('nokogiri', '~> 1.5.10')
-  #s.add_development_dependency('capybara', '2.0.3')
-  #s.add_development_dependency('factory_girl_rails', '~> 2.0.0')
+  #s.add_development_dependency('capybara', '2.0.0')
+  #s.add_development_dependency('factory_girl_rails', '~> 1.1')
 end
