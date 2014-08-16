@@ -3,9 +3,11 @@ ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path("../dummy/config/environment.rb",  __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
-require 'factory_girl_rails'
+#require 'factory_girl_rails'
+require 'webmock/rspec'
 
 Rails.backtrace_cleaner.remove_silencers!
+WebMock.disable_net_connect!( :allow_localhost => true )
 
 # Load support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
