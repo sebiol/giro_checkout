@@ -1,5 +1,6 @@
 module GiroCheckout
   class Engine < ::Rails::Engine
+    engine_name 'giro_checkout'
     isolate_namespace GiroCheckout
 
     config.generators do |g|

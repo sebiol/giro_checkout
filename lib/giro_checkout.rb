@@ -18,6 +18,10 @@ module GiroCheckout
       @configuration.projects[project_id]['project_secret']
     end
 
+    def callback_path
+      Engine.routes.url_helpers.txresult_path
+    end
+
     def message_url(msg_name)
       name = msg_name.match(/Gc(.*)Message$/)[1]
       return nil unless name
@@ -57,6 +61,7 @@ module GiroCheckout
         'transactionstart' => 'https://payment.girosolution.de/girocheckout/api/v2/transaction/start ',
         'transactionstatus' => 'https://payment.girosolution.de/girocheckout/api/v2/transaction/status'
       }
+      @urlRedirect = ''
     end
   end
 

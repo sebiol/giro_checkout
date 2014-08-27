@@ -21,7 +21,9 @@ module GiroCheckout
     def make_api_call
       @parameters['hash'] = build_hash(build_paramstring)
 
-      uri = URI.parse(GiroCheckout.message_url(self.class.name))
+      uri = URI.parse(
+        URI.encode(GiroCheckout.message_url(self.class.name))
+      )
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       request = Net::HTTP::Post.new(uri.path, { 'Content-Type' => 'application/json' })
