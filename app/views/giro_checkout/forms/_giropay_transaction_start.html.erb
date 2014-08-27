@@ -1,0 +1,14 @@
+#Todo international
+<%= form_tag("path", :method => :post) %>
+  <div id="BIC_field" class="field">
+    <label for="BICInput">BIC</label>
+    <input type="text" id="BIC_input" name="BICInput"/>
+  </div>
+  <div id="IBAN_field" class="field">
+    <label for="IBANInput">IBAN</label>
+    <input type="text" id="IBAN_input" name="IBANInput"/>
+  </div>
+  <div class="actions">
+    <%= submit_tag "Mit Giropay bezahlen" %>
+  </div>
+<% end %>

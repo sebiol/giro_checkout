@@ -1,0 +1,9 @@
+<%= form_tag("path", :method => :post) %>
+  <div id="IBAN_field" class="field">
+    <label for="IBANInput">IBAN</label>
+    <input type="text" id="IBAN_input" name="IBANInput"/>
+  </div>
+  <div class="actions">
+    <%= submit_tag "Mit PayPal bezahlen" %>
+  </div>
+<% end %>

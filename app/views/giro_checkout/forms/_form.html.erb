@@ -1,0 +1,15 @@
+#TODO: respect configuration
+<div id="transaction_form">
+  <div id="giropay_form">
+    <span id="giropay_form_title">Giropay</span>
+    <div id="giropay_form_fields">
+      <%= render :partial => "giropay_transaction_start" %>
+    </div>
+  </div>
+  <div id="paypal_form">
+    <span id="paypal_form_title">PayPal</span>
+    <div id="paypal_form_fields">
+      <%= render :partial => "paypal_transaction_start" %>
+    </div>
+  </div>
+</div>
