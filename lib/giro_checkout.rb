@@ -32,6 +32,10 @@ module GiroCheckout
       configuration.message_urls[name.downcase]
     end
 
+    def transaction_by_id(id)
+      GiroCheckout::Transaction.find id
+    end
+
     def start_transaction(payment_data, transaction_data)
       raise 'no payment data' unless payment_data
       raise 'no valid payment data' unless payment_data.is_a? Hash
