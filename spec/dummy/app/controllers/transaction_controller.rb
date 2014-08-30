@@ -4,7 +4,7 @@ class TransactionController < ApplicationController
       'amount' => 1000, 
       'currency' => 'EUR', 
       'purpose' => 'Meinrollstuhl Auswertung',
-      'status' => '1'
+      'status' => GiroCheckout::Transaction::Initialized
     }
 
     logger.info params['payment']
