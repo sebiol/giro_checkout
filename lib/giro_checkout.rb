@@ -43,6 +43,7 @@ module GiroCheckout
       
       transaction = nil
       if transaction_data.instance_of? GiroCheckout::Transaction
+        #Check if transaction status > X (has been payed successfully)
         transaction = transaction_data
         transaction.save unless transaction.id
       else
