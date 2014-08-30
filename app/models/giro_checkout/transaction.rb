@@ -4,7 +4,7 @@ module GiroCheckout
 
     def rel_attributes
       result = Hash.new(nil)
-      result['merchantTxId'] = id
+      result['merchantTxId'] = self.id
       result['amount'] = amount
       result['currency'] = currency
       result['purpose'] = purpose
