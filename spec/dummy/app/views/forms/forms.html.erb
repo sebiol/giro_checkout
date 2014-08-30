@@ -1,1 +1,6 @@
+<% if @error %>
+  <div>
+    <p><%= @error %></p>
+  </div>
+<% end %>
 <%= render :partial => "giro_checkout/forms/form.html" %>

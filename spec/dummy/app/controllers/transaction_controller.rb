@@ -1,21 +1,22 @@
-require_dependency "giro_checkout/application_controller"
+class TransactionController < ApplicationController
+  def start
+    transaction = { 
+      'amount' => 1000, 
+      'currency' => 'EUR', 
+      'purpose' => 'Meinrollstuhl Auswertung',
+      'status' => '1'
+    }
 
-module GiroCheckout
-  class TransactionController < ApplicationController
-    def start
-      
-      payment_type = "paypal" if params['payment'].has_key? 'paypal'
-      payment_type = "giropay" if params['payment'].has_key? 'giropay'
+    logger.info params['payment']
 
-      logger.info payment_type 
+    res = GiroCheckout.start_transaction(params['payment'], transaction)
 
-      transaction = { 
-        'amount' => 10, 
-        'currency' => 'EUR', 
-        'purpose' => 'Meinrollstuhl Auswertung',
-        'status' => '1'
-      }
-
+    #Redirect to result url if contains url
+    if res =~ /^https:/
+      redirect_to res 
+    else
+      #If result dosen't contain a url redirect to form page with error
+      session[:error] = res
       redirect_to '/forms'
     end
   end
