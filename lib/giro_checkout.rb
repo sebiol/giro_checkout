@@ -100,6 +100,7 @@ module GiroCheckout
     attr_accessor :psps
     attr_accessor :projects
     attr_accessor :message_urls
+    attr_accessor :transaction_start_path
 
     def initialize
       @merchantId = '1234567'
@@ -117,7 +118,7 @@ module GiroCheckout
         'transactionstatus' => 'https://payment.girosolution.de/girocheckout/api/v2/transaction/status'
       }
       @urlRedirect = 'http://www.example.com/callback/finish'
-      @transaction_start_path = ''
+      @transaction_start_path = '/transaction'
     end
   end
 
