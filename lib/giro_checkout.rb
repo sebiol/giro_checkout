@@ -62,6 +62,7 @@ module GiroCheckout
         'transactionstatus' => 'https://payment.girosolution.de/girocheckout/api/v2/transaction/status'
       }
       @urlRedirect = 'http://www.example.com/callback/finish'
+      @transaction_start_path = ''
     end
   end
 
