@@ -4,7 +4,7 @@ module GiroCheckout
 
     def rel_attributes
       result = Hash.new(nil)
-      result['merchantTxId'] = self.id
+      result['merchantTxId'] = id
       result['amount'] = amount
       result['currency'] = currency
       result['purpose'] = purpose
@@ -12,7 +12,7 @@ module GiroCheckout
     end
 
     def build_paramstring
-      "#{self.id}#{@amount}#{@currency}#{@purpose}"
+      "#{self.id}#{amount}#{currency}#{purpose}"
     end
 
   end
