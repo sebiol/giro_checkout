@@ -77,14 +77,17 @@ module GiroCheckout
       else
         raise 'no valid payment data'
       end
-
+      
+      #Check response & Log errors
       response = msg.make_api_call
-      if response 
-        transaction.status = 2
-        #save gcTxID
-        transaction.save
-      end
-      return response
+      
+      return response unless response.instance_of? Hash
+      return response['rc'] unless response['rc'] == '0'
+
+      transaction.gcTransactionID = response['reference']
+      transaction.save
+
+      return response['redirect']
     end
 
   end
