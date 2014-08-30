@@ -27,8 +27,10 @@ class TransactionController < ApplicationController
       @msg = "Transaction ok"
     when :server_exception
       @msg = "Server exception"
+    when :abort
+      @msg = "Transaation aborted"
     else
-      @msg = "Transaction Abbort"
+      @msg = "Transaction Failed"
     end 
   end
 end
