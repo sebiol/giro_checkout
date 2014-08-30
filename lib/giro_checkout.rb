@@ -89,6 +89,7 @@ module GiroCheckout
       return response['rc'] unless response['rc'] == '0'
 
       transaction.gcTransactionID = response['reference']
+      transaction.status = GiroCheckout::Transaction::Started
       transaction.save
 
       return response['redirect']
