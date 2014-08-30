@@ -36,26 +36,44 @@ module GiroCheckout
       GiroCheckout::Transaction.find id
     end
 
+    def get_transaction(transaction_data, payment_type = nil)
+      if transaction_data.instance_of? GiroCheckout::Transaction
+        transaction_data.save unless transaction_data.id
+        return transaction_data
+      elsif transaction_data.instance_of? Hash
+        unless transaction_data['project_id']
+          return :no_payment_type unless payment_type 
+          transaction_data['project_id'] = project_id(payment_type) 
+        end
+        transaction = GiroCheckout::Transaction.new(transaction_data)
+        transaction.save 
+        transaction
+      else 
+        return transaction_by_id transaction_data 
+      end
+    end
+
     def start_transaction(payment_data, transaction_data)
       raise 'no payment data' unless payment_data
       raise 'no valid payment data' unless payment_data.is_a? Hash
       raise 'no valid payment data' if payment_data.count < 1
       
-      transaction = nil
-      if transaction_data.instance_of? GiroCheckout::Transaction
-        #Check if transaction status > X (has been payed successfully)
-        transaction = transaction_data
-        transaction.save unless transaction.id
-      else
-        transaction = GiroCheckout::Transaction.new(transaction_data)
-        transaction.save
-      end
-
       msg = nil
       if payment_data.has_key? 'paypal'
-        msg = GcPaypaltransactionstartMessage.new(transaction)
+        Rails.logger.info 'start paypal transaction'
+        Rails.logger.info 'get transaction'
+        transaction = get_transaction(transaction_data, 'paypal')
+        Rails.logger.info 'create message'
+        msg = GcPaypaltransactionstartMessage.new( transaction )
       elsif payment_data.has_key? 'giropay'
-        msg = GcGiropaytransactionstartMessage.new(transaction, payment_data['giropay']['BIC'], payment_data['giropay']['IBAN'])
+        Rails.logger.info 'start giropay transaction'
+        Rails.logger.info 'get transaction'
+        transaction = get_transaction(transaction_data, 'giropay')
+        Rails.logger.info 'create message'
+        msg = GcGiropaytransactionstartMessage.new(
+          transaction,
+          payment_data['giropay']['BIC'], payment_data['giropay']['IBAN']
+        )
       else
         raise 'no valid payment data'
       end
