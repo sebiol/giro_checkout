@@ -40,8 +40,10 @@ module GiroCheckout
       transaction = nil
       if transaction_data.instance_of? GiroCheckout::Transaction
         transaction = transaction_data
+        transaction.save unless transaction.id
       else
-        transaction = Transaction.new(transaction_data)
+        transaction = GiroCheckout::Transaction.new(transaction_data)
+        transaction.save
       end
 
       msg = nil
