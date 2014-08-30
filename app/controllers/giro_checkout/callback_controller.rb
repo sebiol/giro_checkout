@@ -5,13 +5,13 @@ module GiroCheckout
   class CallbackController < ApplicationController
     def transaction_result
       #Check params & hash
-      unless (
-        params['gcReference'] 
-        and params['gcMerchantTxId'] 
-        and params['gcBackendTxId']
-        and params['gcAmount']
-        and params['gcCurrency']
-        and params['gcHash']
+      unless ( \
+        params['gcReference'] \
+        and params['gcMerchantTxId'] \
+        and params['gcBackendTxId'] \
+        and params['gcAmount'] \
+        and params['gcCurrency'] \
+        and params['gcHash'] 
       )
         render :nothing => true, :status => 400, :content_type => 'text/html'
       end
