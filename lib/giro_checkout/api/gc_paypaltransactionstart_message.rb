@@ -7,7 +7,7 @@ module GiroCheckout
 
     #Paypal has no unique attributes for the api invocation
     def build_paramstring
-      super paramstring("")
+      super ""
     end
   end
 end
