@@ -19,7 +19,7 @@ module GiroCheckout
     end
 
     def callback_path
-      Engine.routes.url_helpers.txresult_path
+      "http://www.example.com#{Engine.routes.url_helpers.txresult_path}"
     end
 
     def message_url(msg_name)
