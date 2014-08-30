@@ -20,4 +20,15 @@ class TransactionController < ApplicationController
       redirect_to '/forms'
     end
   end
+
+  def finish
+    case GiroCheckout.process_transaction params
+    when :ok
+      @msg = "Transaction ok"
+    when :server_exception
+      @msg = "Server exception"
+    else
+      @msg = "Transaction Abbort"
+    end 
+  end
 end
