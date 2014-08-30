@@ -7,6 +7,8 @@ module GiroCheckout
     attr_accessor :message_url
     attr_accessor :parameters
     attr_accessor :project_secret
+    attr_accessor :response
+    attr_accessor :request
 
     #Each GiroCheckout::Message needs projectId
     #The projectSecret can be retrieved through the projectID
@@ -26,13 +28,13 @@ module GiroCheckout
       )
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
-      request = Net::HTTP::Post.new(uri.path, { 'Content-Type' => 'application/json' })
-      request.set_form_data(@parameters)
+      @request = Net::HTTP::Post.new(uri.path, { 'Content-Type' => 'application/json' })
+      @request.set_form_data(@parameters)
 
-      response = http.request(request)
-      return nil unless check_response response
+      @response = http.request(request)
+      #return nil unless check_response @response
 
-      return response
+      return @response
     end
 
     def check_response response
