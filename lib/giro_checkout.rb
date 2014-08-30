@@ -32,6 +32,36 @@ module GiroCheckout
       configuration.message_urls[name.downcase]
     end
 
+    def start_transaction(payment_data, transaction_data)
+      raise 'no payment data' unless payment_data
+      raise 'no valid payment data' unless payment_data.is_a? Hash
+      raise 'no valid payment data' if payment_data.count < 1
+      
+      transaction = nil
+      if transaction_data.instance_of? GiroCheckout::Transaction
+        transaction = transaction_data
+      else
+        transaction = Transaction.new(transaction_data)
+      end
+
+      msg = nil
+      if payment_data.has_key? 'paypal'
+        msg = GcPaypaltransactionstartMessage.new(transaction)
+      elsif payment_data.has_key? 'giropay'
+        msg = GcGiropaytransactionstartMessage.new(transaction, payment_data['giropay']['BIC'], payment_data['giropay']['IBAN'])
+      else
+        raise 'no valid payment data'
+      end
+
+      response = msg.make_api_call
+      if response 
+        transaction.status = 2
+        #save gcTxID
+        transaction.save
+      end
+      return response
+    end
+
   end
 
   def self.configure
