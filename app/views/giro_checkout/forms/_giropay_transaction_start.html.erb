@@ -1,11 +1,11 @@
-<%= form_tag("path", :method => :post) do %>
+<%= form_tag(GiroCheckout.transaction_start_path, :method => :post) do %>
   <div id="BIC_field" class="field">
-    <label for="BICInput">BIC</label>
-    <input type="text" id="BIC_input" name="BICInput"/>
+    <label for="payment[giropay][BIC]">BIC</label>
+    <input type="text" id="giropay_BIC" name="payment[giropay][BIC]"/>
   </div>
   <div id="IBAN_field" class="field">
-    <label for="IBANInput">IBAN</label>
-    <input type="text" id="IBAN_input" name="IBANInput"/>
+    <label for="payment[giropay][IBAN]">IBAN</label>
+    <input type="text" id="giropay_IBAN" name="payment[giropay][IBAN]"/>
   </div>
   <div class="actions">
     <%= submit_tag "Mit Giropay bezahlen" %>
