@@ -9,8 +9,8 @@ module GiroCheckout
 
     Successful    = 2000
 
-    Aborted       = 4000
-    Failed        = 4000
+    Aborted       = 4001
+    Failed        = 4002
     
 
     def rel_attributes
