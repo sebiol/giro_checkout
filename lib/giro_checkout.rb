@@ -132,7 +132,7 @@ module GiroCheckout
       Rails.logger.info paramstring
 
       digest = OpenSSL::Digest::Digest.new('md5')
-      hash_calc = OpenSSL::HMAC.hexdigest(digest, project_secret, data) 
+      hash_calc = OpenSSL::HMAC.hexdigest(digest, project_secret, paramstring) 
 
       unless params['gcHash'] == hash_calc
         Rails.logger.warn "Hash missmatch"
