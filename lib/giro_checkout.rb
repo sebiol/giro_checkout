@@ -18,8 +18,12 @@ module GiroCheckout
       @configuration.projects[project_id]['project_secret']
     end
 
-    def callback_path
-      "http://www.example.com#{Engine.routes.url_helpers.txresult_path}"
+    def urlNotify
+      "#{@configuration.hostname}#{Engine.routes.url_helpers.txresult_path}"
+    end
+
+    def urlRedirect
+      "#{@configuration.hostname}#{@configuration.transaction_return_path}"
     end
 
     def message_url(msg_name)
@@ -120,7 +124,9 @@ module GiroCheckout
         'transactionstart' => 'https://payment.girosolution.de/girocheckout/api/v2/transaction/start',
         'transactionstatus' => 'https://payment.girosolution.de/girocheckout/api/v2/transaction/status'
       }
-      @urlRedirect = 'http://www.example.com/callback/finish'
+
+      @hostname = 'https://www.example.com'
+      @transaction_return_path = '/callback/finish'
       @transaction_start_path = '/transaction'
     end
   end

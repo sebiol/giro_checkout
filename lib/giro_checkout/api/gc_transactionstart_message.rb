@@ -6,8 +6,8 @@ module GiroCheckout
       super transaction.project_id
       @transaction = transaction
       #merge transaction.rel_attributes into parameters so they are passed as post arguments in the api invocation
-      @parameters['urlRedirect'] = GiroCheckout.configuration.urlRedirect
-      @parameters['urlNotify'] = GiroCheckout.callback_path
+      @parameters['urlRedirect'] = GiroCheckout.urlRedirect
+      @parameters['urlNotify'] = GiroCheckout.urlNotify
       @parameters.merge!(transaction.rel_attributes)
     end
 
