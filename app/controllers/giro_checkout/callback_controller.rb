@@ -7,11 +7,11 @@ module GiroCheckout
       #Check params & hash
       unless (
         params['gcReference'] 
-        & params['gcMerchantTxId'] 
-        & params['gcBackendTxId']
-        & params['gcAmount']
-        & params['gcCurrency']
-        & params['gcHash']
+        and params['gcMerchantTxId'] 
+        and params['gcBackendTxId']
+        and params['gcAmount']
+        and params['gcCurrency']
+        and params['gcHash']
       )
         render :nothing => true, :status => 400, :content_type => 'text/html'
       end
