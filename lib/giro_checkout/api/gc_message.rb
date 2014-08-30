@@ -32,18 +32,25 @@ module GiroCheckout
       @request.set_form_data(@parameters)
 
       @response = http.request(request)
-      #return nil unless check_response @response
+      check_response @response
+      
+      result = nil
+      begin
+        result = JSON.parse(@response.body)
+      rescue
+        result = :invalid_json
+      end
 
-      return @response
+      return result
     end
 
     def check_response response
-      return false unless response 
-      return false unless response.code == '200'
-      raise "no hash" unless response.header['hash']
+      raise 'no response' unless response
+      raise 'unsuccessful call' unless response.code == '200'
+      raise 'no header' unless response.header
       raise "no body" unless response.body
-
-      build_hash(response.body) == response.header['hash']
+      raise "no hash" unless response.header['hash']
+      raise "hash missmatch" unless build_hash(response.body) == response.header['hash']
     end
 
     #overwrite in child classes as order of input params is important
