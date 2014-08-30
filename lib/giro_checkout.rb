@@ -104,11 +104,12 @@ module GiroCheckout
 
   class Configuration
     attr_accessor :merchantId
-    attr_accessor :urlRedirect
+    attr_accessor :hostname
     attr_accessor :psps
     attr_accessor :projects
     attr_accessor :message_urls
     attr_accessor :transaction_start_path
+    attr_accessor :transaction_return_path
 
     def initialize
       @merchantId = '1234567'
