@@ -142,14 +142,15 @@ module GiroCheckout
       #TODO: check all attributes
 
       #update transaction
+      new_status = GiroCheckout::Transaction::Pending
       if params['gcResultPayment']
         if params['gcResultPayment'] == '4000'
           new_status = GiroCheckout::Transaction::Successful
+        elsif params['gcResultPayment'] == '4900'
+          new_status = GiroCheckout::Transaction::Aborted
         else
           new_status = GiroCheckout::Transaction::Failed
         end
-      else
-        new_status = GiroCheckout::Transaction::Pending
       end
 
       begin
@@ -162,7 +163,15 @@ module GiroCheckout
       end
 
       #send positive result
-      return :ok
+      if new_status == GiroCheckout::Transaction::Successful
+        return :ok
+      elsif new_status == GiroCheckout::Transaction::Aborted
+        return :abort
+      elsif new_status == GiroCheckout::Transaction::Pending
+        return :pending 
+      else
+        return :failed
+      end
     end
 
 
