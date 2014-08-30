@@ -58,10 +58,10 @@ module GiroCheckout
       }
       @message_urls = { 
         'bankstatus' => 'https://payment.girosolution.de/girocheckout/api/v2/giropay/bankstatus',
-        'transactionstart' => 'https://payment.girosolution.de/girocheckout/api/v2/transaction/start ',
+        'transactionstart' => 'https://payment.girosolution.de/girocheckout/api/v2/transaction/start',
         'transactionstatus' => 'https://payment.girosolution.de/girocheckout/api/v2/transaction/status'
       }
-      @urlRedirect = ''
+      @urlRedirect = 'http://www.example.com/callback/finish'
     end
   end
 
