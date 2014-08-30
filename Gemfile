@@ -6,7 +6,12 @@ source "http://rubygems.org"
 gemspec
 
 # jquery-rails is used by the dummy application
+gem "execjs",  '2.0.0'
 gem "jquery-rails"
+gem "uglifier"
+gem "sass-rails"
+gem "therubyracer"
+gem "coffee-rails"
 
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or
