@@ -1,3 +1,3 @@
 GiroCheckout::Engine.routes.draw do
-  get "callback/transaction_result", :as => 'txresult'
+  match 'callback/transaction_result', :to => 'callback#transaction_result' ,:as => 'txresult'
 end
