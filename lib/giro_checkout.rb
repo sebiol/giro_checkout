@@ -44,6 +44,19 @@ module GiroCheckout
       GiroCheckout::Transaction.find id
     end
 
+    def create_transaction(transaction_data)
+      return nil unless transaction_data.instance_of? Hash
+
+      #check data
+      return :no_amount if transaction_data['amount'].nil?
+      return :no_currency if transaction_data['currency'].nil?
+      return :no_purpose if transaction_data['purpose'].nil?
+
+      transaction = GiroCheckout::Transaction.new(transaction_data)
+      transaction.status = GiroCheckout::Transaction::Initialized
+      transaction.save
+    end
+
     def get_transaction(transaction_data, payment_type = nil)
       if transaction_data.instance_of? GiroCheckout::Transaction
         transaction_data.save unless transaction_data.id
