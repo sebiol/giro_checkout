@@ -10,6 +10,10 @@ module GiroCheckout
   class << self
     attr_accessor :configuration
 
+    def available_projects
+      @psps.keys
+    end
+
     def project_id(psp)
       @configuration.psps[psp]
     end
