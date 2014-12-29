@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ["sebiol"]
   s.email       = ["mail@sebiol.de"]
   s.homepage    = "https://github.com/sebiol/giro_checkout"
-  s.summary     = "Ruby Interface to the girocheckout API"
-  s.description = "Provides a Rails plugin for interaction with th girocheckout API. Girocheckout handles payment transactions with various payment service providers."
+  s.summary     = "Ruby Interface to the Girocheckout API"
+  s.description = "Provides a Rails plugin for interaction with the Girocheckout API. Girocheckout handles payment transactions with various payment service providers."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"]
