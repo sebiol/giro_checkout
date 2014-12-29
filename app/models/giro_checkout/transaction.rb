@@ -17,7 +17,46 @@ module GiroCheckout
     end
 
     def pay(payment_data)
-      raise "not implemented yet"
+      return :not_allowed unless status == Initialized
+      raise 'no payment data' unless payment_data
+      raise 'no valid payment data' unless payment_data.is_a? Hash
+      raise 'no valid payment data' unless payment_data.count == 1
+
+      self.project_id = GiroCheckout.project_id(payment_data.keys[0])
+      raise "no_psp named '#{payment_data.keys[0]}'" if self.project_id.nil?
+      raise "no_project_secret for id: #{self.project_id}" if GiroCheckout.project_secret(self.project_id).nil?
+
+      if payment_data.keys[0] == 'paypal'
+        Rails.logger.info 'start paypal transaction'
+        Rails.logger.info "project id = #{self.project_id}"
+        Rails.logger.info 'create message'
+        msg = GcPaypaltransactionstartMessage.new( self )
+      elsif payment_data.keys[0] == 'giropay'
+        return :no_BIC if payment_data['giropay']['BIC']
+        return :invalid_BIC if payment_data['giropay']['BIC'].count < 8
+        return :invalid_BIC if payment_data['giropay']['BIC'].count > 11
+
+        Rails.logger.info 'start giropay transaction'
+        Rails.logger.info 'create message'
+        msg = GcGiropaytransactionstartMessage.new(
+          self,
+          payment_data['giropay']['BIC'], payment_data['giropay']['IBAN']
+        )
+      else
+        return :invalid_payment_data
+      end
+
+      #Check response & Log errors
+      response = msg.make_api_call
+
+      return response unless response.instance_of? Hash
+      return response['rc'] unless response['rc'] == '0'
+
+      self.gcTransactionID = response['reference']
+      self.status = GiroCheckout::Transaction::Started
+      self.save
+
+      return response['redirect']
     end
 
     def rel_attributes
