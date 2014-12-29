@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = ["mail@sebiol.de"]
   s.homepage    = "https://github.com/sebiol/giro_checkout"
   s.summary     = "Ruby Interface to the Girocheckout API"
-  s.description = "Provides a Rails plugin for interaction with the Girocheckout API. Girocheckout handles payment transactions with various payment service providers."
+  s.description = "Provides a Rails plugin for interaction with the Girocheckout API. Girocheckout handles payment transactions with various payment service providers. Via this gem usable payment service providers are: GiroPay and Paypal. The author has no affiliation with Girocheckout."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"]
