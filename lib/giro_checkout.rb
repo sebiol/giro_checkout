@@ -98,7 +98,7 @@ module GiroCheckout
         return :client_error
       end
 
-      project_secret = GiroCheckout.project_secret transaction.project_id
+      project_secret = GiroCheckout.project_secret(transaction.project_id)
       if project_secret.nil?
         Rails.logger.warn "No project secret for project id: #{transaction.project_id}"
         return :client_error
