@@ -75,45 +75,7 @@ module GiroCheckout
     end
 
     def start_transaction(payment_data, transaction_data)
-      raise 'no payment data' unless payment_data
-      raise 'no valid payment data' unless payment_data.is_a? Hash
-      raise 'no valid payment data' if payment_data.count < 1
-      
-      msg = nil
-      if payment_data.has_key? 'paypal'
-        Rails.logger.info 'start paypal transaction'
-        Rails.logger.info 'get transaction'
-        transaction = get_transaction(transaction_data, 'paypal')
-        Rails.logger.info 'create message'
-        msg = GcPaypaltransactionstartMessage.new( transaction )
-      elsif payment_data.has_key? 'giropay'
-        return :no_BIC if payment_data['giropay']['BIC']
-        return :invalid_BIC if payment_data['giropay']['BIC'].count < 8
-        return :invalid_BIC if payment_data['giropay']['BIC'].count > 11
-
-        Rails.logger.info 'start giropay transaction'
-        Rails.logger.info 'get transaction'
-        transaction = get_transaction(transaction_data, 'giropay')
-        Rails.logger.info 'create message'
-        msg = GcGiropaytransactionstartMessage.new(
-          transaction,
-          payment_data['giropay']['BIC'], payment_data['giropay']['IBAN']
-        )
-      else
-        return :invalid_payment_data
-      end
-      
-      #Check response & Log errors
-      response = msg.make_api_call
-      
-      return response unless response.instance_of? Hash
-      return response['rc'] unless response['rc'] == '0'
-
-      transaction.gcTransactionID = response['reference']
-      transaction.status = GiroCheckout::Transaction::Started
-      transaction.save
-
-      return response['redirect']
+      raise :deprecated
     end
 
     def process_transaction params
