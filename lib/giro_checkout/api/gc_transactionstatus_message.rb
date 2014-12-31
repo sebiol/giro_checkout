@@ -12,8 +12,8 @@ module GiroCheckout
 
     #This method is to be called from child class via super(child_paramstring)
     #Handles common fields of the transactionstart message
-    def build_paramstring(child_paramstring)
-      "#{@parameters['merchantId']}#{@parameters['projectId']}#{@transaction.build_paramstring}#{child_paramstring}#{GiroCheckout.urlRedirect}#{GiroCheckout.urlNotify}"
+    def build_paramstring()
+      "#{@parameters['merchantId']}#{@parameters['projectId']}#{@parameters['reference']}"
     end
 
   end
