@@ -13,7 +13,10 @@ module GiroCheckout
     Failed        = 4002
     
     def update_status()
-      raise "not implemented yet"
+#      raise "not implemented yet"
+      msg = GcTransactionstatusMessage.new( self )
+      response = msg.make_api_call
+      #Check response & Log errors
     end
 
     def pay(payment_data)
