@@ -64,6 +64,7 @@ module GiroCheckout
       transaction = GiroCheckout::Transaction.new(transaction_data)
       transaction.status = GiroCheckout::Transaction::Initialized
       transaction.save
+      return transaction
     end
 
     def get_transaction(transaction_data, payment_type = nil)
@@ -78,7 +79,7 @@ module GiroCheckout
         transaction = GiroCheckout::Transaction.new(transaction_data)
         transaction.status = GiroCheckout::Transaction::Initialized
         transaction.save 
-        transaction
+        return transaction
       else 
         return transaction_by_id transaction_data 
       end
