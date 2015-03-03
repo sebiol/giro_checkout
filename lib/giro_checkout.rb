@@ -68,6 +68,7 @@ module GiroCheckout
           transaction_data['project_id'] = project_id(payment_type) 
         end
         transaction = GiroCheckout::Transaction.new(transaction_data)
+        transaction.status = GiroCheckout::Transaction::Initialized
         transaction.save 
         transaction
       else 
