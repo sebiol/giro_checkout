@@ -25,7 +25,8 @@ module GiroCheckout
       raise 'no valid payment data' unless payment_data.is_a? Hash
       raise 'no valid payment data' unless payment_data.count == 1
 
-      self.project_id = GiroCheckout.project_id(payment_data.keys[0])
+      #project_id needs to be set on creation
+      #self.project_id = GiroCheckout.project_id(payment_data.keys[0])
       raise "no_psp named '#{payment_data.keys[0]}'" if self.project_id.nil?
       raise "no_project_secret for id: #{self.project_id}" if GiroCheckout.project_secret(self.project_id).nil?
 
