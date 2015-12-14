@@ -44,7 +44,8 @@ module GiroCheckout
         Rails.logger.info 'create message'
         msg = GcGiropaytransactionstartMessage.new(
           self,
-          payment_data['giropay']['BIC'], payment_data['giropay']['IBAN']
+          payment_data['giropay']['BIC'],
+          payment_data['giropay']['IBAN']
         )
       else
         return :invalid_payment_data
