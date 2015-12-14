@@ -1,6 +1,7 @@
 <%= form_tag(GiroCheckout.configuration.transaction_start_path, :method => :post) do %>
   <div class="actions">
     <%= hidden_field_tag 'payment[paypal]' %>
+    <%= hidden_field_tag 'method', 'paypal' %>
     <%= submit_tag "Mit PayPal bezahlen" %>
   </div>
 <% end %>
