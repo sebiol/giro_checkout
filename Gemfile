@@ -7,11 +7,15 @@ gemspec
 
 # jquery-rails is used by the dummy application
 gem "execjs",  '2.0.0'
-gem "jquery-rails"
-gem "uglifier"
-gem "sass-rails"
-gem "therubyracer"
-gem "coffee-rails"
+gem "jquery-rails", "2.2.1"
+gem "uglifier", "2.1.1"
+gem "sass-rails", "3.2.6"
+gem "therubyracer", "0.11.4"
+gem "coffee-rails", "3.2.2"
+
+#lock versions to work with 1.8.7
+gem "ref", "1.0.5"
+gem "rack-cache", "1.2"
 
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or
