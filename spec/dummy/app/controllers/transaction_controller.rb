@@ -1,15 +1,19 @@
 class TransactionController < ApplicationController
   def start
-    transaction = { 
+    transaction_data = { 
       'amount' => 1000, 
       'currency' => 'EUR', 
       'purpose' => 'Meinrollstuhl Auswertung',
-      'status' => GiroCheckout::Transaction::Initialized
     }
 
-    logger.info params['payment']
+    logger.info params['method']
+    logger.info params['payment'].inspect
 
-    res = GiroCheckout.start_transaction(params['payment'], transaction)
+    transaction_data['project_id'] = GiroCheckout.project_id(params['method'])
+
+    transaction = GiroCheckout.create_transaction(transaction_data)
+    logger.debug transaction
+    res = transaction.pay(params['payment'])
 
     #Redirect to result url if contains url
     if res =~ /^https:/
