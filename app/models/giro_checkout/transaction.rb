@@ -36,9 +36,9 @@ module GiroCheckout
         Rails.logger.info 'create message'
         msg = GcPaypaltransactionstartMessage.new( self )
       elsif payment_data.keys[0] == 'giropay'
-        return :invalid_BIC if payment_data['giropay']['BIC'].count < 8
-        return :invalid_BIC if payment_data['giropay']['BIC'].count > 11
         return :no_BIC if payment_data['giropay']['BIC'].nil?
+        return :invalid_BIC if payment_data['giropay']['BIC'].length < 8
+        return :invalid_BIC if payment_data['giropay']['BIC'].length > 11
 
         Rails.logger.info 'start giropay transaction'
         Rails.logger.info 'create message'
