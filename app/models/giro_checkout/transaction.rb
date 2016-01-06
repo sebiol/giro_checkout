@@ -19,28 +19,31 @@ module GiroCheckout
       #Check response & Log errors
     end
 
-    def pay(payment_data)
-      return :not_allowed unless status == Initialized
+    def pay(payment_data, payment_type)
+      rasie 'not allowed transaction must be in state initalized' unless status == Initialized
       raise 'no payment data' unless payment_data
       raise 'no valid payment data' unless payment_data.is_a? Hash
-      raise 'no valid payment data' unless payment_data.count == 1
+      #raise 'no valid payment data' unless payment_data.count == 1
 
-      #project_id needs to be set on creation
-      #self.project_id = GiroCheckout.project_id(payment_data.keys[0])
-      raise "no_psp named '#{payment_data.keys[0]}'" if self.project_id.nil?
+      self.project_id = GiroCheckout.project_id(payment_type)
+      raise "no_psp named '#{payment_type}' configured" if self.project_id.nil?
       raise "no_project_secret for id: #{self.project_id}" if GiroCheckout.project_secret(self.project_id).nil?
 
-      if payment_data.keys[0] == 'paypal'
+      #Following integrity checks could / should be part of the messages. Makes testing more modular and reduces complexity overall.
+      #TODO: move to message
+      if payment_type == 'paypal'
         Rails.logger.info 'start paypal transaction'
         Rails.logger.info "project id = #{self.project_id}"
         Rails.logger.info 'create message'
         msg = GcPaypaltransactionstartMessage.new( self )
-      elsif payment_data.keys[0] == 'giropay'
         return :no_BIC if payment_data['giropay']['BIC'].nil?
         return :invalid_BIC if payment_data['giropay']['BIC'].length < 8
         return :invalid_BIC if payment_data['giropay']['BIC'].length > 11
+      elsif payment_type == 'giropay'
+        Rails.logger.info "#{payment_data['giropay']['BIC']} : #{payment_data['giropay']['IBAN']}"
 
         Rails.logger.info 'start giropay transaction'
+        Rails.logger.info "project id = #{self.project_id}"
         Rails.logger.info 'create message'
         msg = GcGiropaytransactionstartMessage.new(
           self,

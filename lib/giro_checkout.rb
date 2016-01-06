@@ -45,21 +45,13 @@ module GiroCheckout
       GiroCheckout::Transaction.find id
     end
 
-    def create_transaction(transaction_data, payment_type = nil)
+    def create_transaction(transaction_data)
       return nil unless transaction_data.instance_of? Hash
 
       #check data
       return :no_amount if transaction_data['amount'].nil?
       return :no_currency if transaction_data['currency'].nil?
       return :no_purpose if transaction_data['purpose'].nil?
-
-      if payment_type.nil?
-        return :no_proj_id if transaction_data['project_id'].nil?
-      else
-        proj_id = project_id(payment_type)
-        return :no_psp_for_paymenttype if proj_id.nil?
-        transaction_data['project_id'] = proj_id
-      end
 
       transaction = GiroCheckout::Transaction.new(transaction_data)
       transaction.status = GiroCheckout::Transaction::Initialized
