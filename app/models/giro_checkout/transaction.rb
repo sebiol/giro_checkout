@@ -11,7 +11,7 @@ module GiroCheckout
 
     Aborted       = 4001
     Failed        = 4002
-    
+
     def update_status()
 #      raise "not implemented yet"
       msg = GcTransactionstatusMessage.new( self )
@@ -20,7 +20,7 @@ module GiroCheckout
     end
 
     def pay(payment_data, payment_type)
-      rasie 'not allowed transaction must be in state initalized' unless status == Initialized
+      raise 'not allowed transaction must be in state initalized' unless status == Initialized
       raise 'no payment data' unless payment_data
       raise 'no valid payment data' unless payment_data.is_a? Hash
       #raise 'no valid payment data' unless payment_data.count == 1
@@ -36,11 +36,13 @@ module GiroCheckout
         Rails.logger.info "project id = #{self.project_id}"
         Rails.logger.info 'create message'
         msg = GcPaypaltransactionstartMessage.new( self )
-        return :no_BIC if payment_data['giropay']['BIC'].nil?
-        return :invalid_BIC if payment_data['giropay']['BIC'].length < 8
-        return :invalid_BIC if payment_data['giropay']['BIC'].length > 11
       elsif payment_type == 'giropay'
         Rails.logger.info "#{payment_data['giropay']['BIC']} : #{payment_data['giropay']['IBAN']}"
+        #Emulate giropay response
+        return { 'rc' => '5031', 'msg' => 'Keine BIC angegeben' } if payment_data['giropay']['BIC'].blank?
+        #Emulate giropay response
+        return { 'rc' => '5026', 'msg' => 'BIC zu kurz' } if payment_data['giropay']['BIC'].length < 8
+        return { 'rc' => '5026', 'msg' => 'BIC zu lang' } if payment_data['giropay']['BIC'].length > 11
 
         Rails.logger.info 'start giropay transaction'
         Rails.logger.info "project id = #{self.project_id}"
@@ -51,20 +53,25 @@ module GiroCheckout
           payment_data['giropay']['IBAN']
         )
       else
-        return :invalid_payment_data
+        raise "invalid or not supportet payment type"
       end
 
       #Check response & Log errors
       response = msg.make_api_call
 
-      return response unless response.instance_of? Hash
-      return response['rc'] unless response['rc'] == '0'
+      raise "unexpected response: #{response}" unless response.instance_of? Hash
 
-      self.gcTransactionID = response['reference']
-      self.status = GiroCheckout::Transaction::Started
-      self.save
+      if response['rc'] == '0'
+        #TODO: store URL?
+        Rails.logger.info "transaction #{self.id} success"
+        self.gcTransactionID = response['reference']
+        self.status = GiroCheckout::Transaction::Started
+        self.save
+      else
+        Rails.logger.error "transaction #{self.id} failed: #{response['rc']} - #{response['msg']}"
+      end
 
-      return response['redirect']
+      return response
     end
 
     def rel_attributes
