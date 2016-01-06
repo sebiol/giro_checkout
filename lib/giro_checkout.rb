@@ -67,28 +67,6 @@ module GiroCheckout
       return transaction
     end
 
-    def get_transaction(transaction_data, payment_type = nil)
-      if transaction_data.instance_of? GiroCheckout::Transaction
-        transaction_data.save unless transaction_data.id
-        return transaction_data
-      elsif transaction_data.instance_of? Hash
-        unless transaction_data['project_id']
-          return :no_payment_type unless payment_type 
-          transaction_data['project_id'] = project_id(payment_type) 
-        end
-        transaction = GiroCheckout::Transaction.new(transaction_data)
-        transaction.status = GiroCheckout::Transaction::Initialized
-        transaction.save 
-        return transaction
-      else 
-        return transaction_by_id transaction_data 
-      end
-    end
-
-    def start_transaction(payment_data, transaction_data)
-      raise :deprecated
-    end
-
     def process_transaction params
       unless ( \
         params['gcReference'] \
